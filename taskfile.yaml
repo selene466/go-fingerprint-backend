@@ -1,0 +1,71 @@
+# https://taskfile.dev
+
+version: "3"
+
+dotenv: [".env"]
+
+tasks:
+  build:
+    cmds:
+      - CGO_ENABLED=0 go build -o ./build/$CORE_NAME -ldflags "-s -w"
+
+  cobra:
+    cmds:
+      - go tool cobra-cli {{.CLI_ARGS}}
+
+  schema-new:
+    cmds:
+      - go tool ent --target ./internal/ent/schema new {{.CLI_ARGS}}
+
+  schema-generate:
+    cmds:
+      - go tool ent generate ./internal/ent/schema
+
+  test-services:
+    cmds:
+      - go test -v ./internal/services/...
+
+  dev:
+    deps:
+      - tailwind-watch
+      - templ-watch
+
+  tailwind-generate:
+    - cmd: tailwindcss -i ./tailwind.css -o ./public/css/style.css
+      platforms: [linux]
+    - cmd: tailwindcss.exe -i ./tailwind.css -o ./public/css/style.css
+      platforms: [windows]
+
+  tailwind-watch:
+    - cmd: tailwindcss -i ./tailwind.css -o ./public/css/style.css --watch
+      platforms: [linux]
+    - cmd: tailwindcss.exe -i ./tailwind.css -o ./public/css/style.css --watch
+      platforms: [windows]
+
+  tailwind-sorter:
+    cmds:
+      - go tool go-tailwind-sorter --config ./tailwind-sorter.toml --fix ./internal/views/
+
+  templ-generate:
+    cmds:
+      - go tool templ generate
+
+  templ-watch:
+    cmds:
+      - go tool templ generate -watch
+
+  install-tool-cobra:
+    cmds:
+      - go get -tool -v github.com/spf13/cobra-cli@latest
+
+  install-tool-tailwind-sorter:
+    cmds:
+      - go get -tool -v github.com/selene466/go-tailwind-sorter@latest
+
+  install-tool-templ:
+    cmds:
+      - go get -tool -v github.com/a-h/templ/cmd/templ@latest
+
+  install-tool-ent:
+    cmds:
+      - go get -tool -v entgo.io/ent/cmd/ent@latest
