@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-base-200 p-2.5 min-w-dvw min-h-dvh max-w-screen font-sans text-base-content relative overflow-x-hidden;
+  }
+
+  hr {
+    @apply border-t-base-300;
+  }
+
+  button[aria-disabled="true"] {
+    @apply btn-disabled;
+    opacity: 0.4;
+  }
+
+  input[type="text"][aria-disabled="true"],
+  input[type="password"][aria-disabled="true"],
+  input[type="number"][aria-disabled="true"],
+  input[type="file"][aria-disabled="true"] {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  #progress_wrapper {
+    display: none;
+  }
+
+  #progress_wrapper[aria-busy="true"] {
+    display: block;
+  }
+
+  #modal_wrapper,
+  #toast_wrapper {
+    z-index: 9999;
+  }
+}
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+}
+
+@plugin "./daisyui.mjs" {
+  themes:
+    corporate --default,
+    tokyonight --prefersdark;
+  root: ":root";
+  logs: false;
+}
+
+@plugin "./daisyui-theme.mjs" {
+  name: "tokyonight";
+  default: false;
+  prefersdark: true;
+  color-scheme: "corporate";
+  --color-base-100: #24283b;
+  --color-base-200: #1d202f;
+  --color-base-300: #414868;
+  --color-base-content: #c0caf5;
+  --color-primary: #7aa2f7;
+  --color-primary-content: #faf0fb;
+  --color-secondary: #bb9af7;
+  --color-secondary-content: #faf0fb;
+  --color-accent: #c0caf5;
+  --color-accent-content: #1d202f;
+  --color-neutral: #1a1b26;
+  --color-neutral-content: #faf0fb;
+  --color-info: #7dcfff;
+  --color-info-content: #1a1b26;
+  --color-success: #9fe044;
+  --color-success-content: #1a1b26;
+  --color-warning: #e0af68;
+  --color-warning-content: #1a1b26;
+  --color-error: #f7768e;
+  --color-error-content: #1a1b26;
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@custom-variant dark (&:where([data-theme=tokyonight], [data-theme=tokyonight] *));

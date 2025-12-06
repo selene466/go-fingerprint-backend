@@ -1,0 +1,5 @@
+# tailwind-sorter.toml
+
+[tool.tailwind_sorter]
+file_patterns = [".py", ".templ"]
+class_attributes = ["_class", "class", "x-bind:class", ":class"]
